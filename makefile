@@ -10,7 +10,7 @@ TEST_DIR = src/tests
 SRC_FILES = $(wildcard $(SRC_DIR)/*.v)
 
 # List of modules and testbenches
-MODULES = ALU controlUnit dataPath InstructionFetch RegisterFile
+MODULES = ALU ControlUnit DataPath InstructionFetch RegisterFile
 
 # Output files
 OUTPUTS = $(addprefix tb, $(MODULES))

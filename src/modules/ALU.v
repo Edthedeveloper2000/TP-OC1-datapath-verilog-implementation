@@ -10,9 +10,11 @@ module ALU (
             4'b0001: result = a | b;  // or
             4'b0010: result = a & b;  // andi
             4'b0011: result = a << b; // sll
+            4'b0100: result = (a != b) ? 1 : 0; // bne (branch if not equal)
             default: result = 0;
         endcase
     end
 
     assign zero = (result == 0);
 endmodule
+

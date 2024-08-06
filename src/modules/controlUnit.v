@@ -21,7 +21,7 @@ module ControlUnit (
                 reg_write = 0;
                 alu_control = 4'b0000; // sh
             end
-            7'b0000011: begin load
+            7'b0000011: begin
                 reg_write = 1;
                 alu_control = 4'b0000; // lh
             end

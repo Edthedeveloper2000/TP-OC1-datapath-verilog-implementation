@@ -1,4 +1,4 @@
-module tb_InstructionFetch;
+module tbInstructionFetch;
     reg clk;
     reg reset;
     wire [31:0] instruction;
@@ -16,10 +16,12 @@ module tb_InstructionFetch;
     initial begin
         clk = 0;
         reset = 1;
-        
         #10 reset = 0;
-
         #100;
-        $stop;
+        $finish;
+    end
+
+    initial begin
+        $monitor("At time %t: pc = %h, instruction = %h", $time, pc, instruction);
     end
 endmodule

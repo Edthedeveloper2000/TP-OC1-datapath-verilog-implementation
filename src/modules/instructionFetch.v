@@ -1,21 +1,22 @@
 module InstructionFetch (
-    input wire clk,
-    input wire reset,
-    output wire [31:0] instruction,
-    output wire [31:0] pc
+    input clk,
+    input reset,
+    output reg [31:0] pc,
+    output reg [31:0] instruction
 );
-    reg [31:0] pc_reg;
+    reg [31:0] memory [0:31]; // Define the memory array
 
-    // Memoria de instrucao
-    reg [31:0] instr_mem [0:255];
-
-    assign pc = pc_reg;
-    assign instruction = instr_mem[pc_reg >> 2];
+    // Load memory from file
+    initial begin
+        $readmemh("src/modules/instructions.hex", memory);
+    end
 
     always @(posedge clk or posedge reset) begin
-        if (reset) 
-            pc_reg <= 0;
-        else 
-            pc_reg <= pc_reg + 4;
+        if (reset) begin
+            pc <= 0;
+        end else begin
+            instruction <= memory[pc >> 2]; // Adjust for instruction memory alignment
+            pc <= pc + 4;
+        end
     end
 endmodule

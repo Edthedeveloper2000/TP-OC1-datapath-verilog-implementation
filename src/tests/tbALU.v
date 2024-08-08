@@ -1,7 +1,9 @@
-module ALU_tb;
+`timescale 1ns / 1ps
+
+module tb_alu;
 
     reg [31:0] a, b;
-    reg [3:0] alu_control;
+    reg [2:0] alu_control;
     wire [31:0] result;
     wire zero;
 
@@ -14,54 +16,41 @@ module ALU_tb;
     );
 
     initial begin
-        // Test ADD operation
-        a = 32'd10;
-        b = 32'd15;
-        alu_control = 4'b0000; // add
-        #10;
-        $display("ADD: a = %d, b = %d, result = %d, zero = %b", a, b, result, zero);
+        $display("Time\tA\t\t\tB\t\tALUCtrl\tResult\tZero");
+        $display("------------------------------------------------------------");
+        $monitor("%0t\t%h\t%h\t%b\t%h\t%b", $time, a, b, alu_control, result, zero);
+    end
 
-        // Test OR operation
-        a = 32'hFF00FF00;
-        b = 32'h00FF00FF;
-        alu_control = 4'b0001; // or
+    initial begin
+        // Test 1: ADD
+        a = 32'h00000003;
+        b = 32'h00000002;
+        alu_control = 3'b000; // ADD
         #10;
-        $display("OR: a = %h, b = %h, result = %h, zero = %b", a, b, result, zero);
 
-        // Test OR operation with both operands as 0
-        a = 32'h00000000;
-        b = 32'h00000000;
-        alu_control = 4'b0001; // or
+        // Test 2: OR
+        a = 32'h00000003;
+        b = 32'h00000002;
+        alu_control = 3'b001; // OR
         #10;
-        $display("OR with zeros: a = %h, b = %h, result = %h, zero = %b", a, b, result, zero);
 
-        // Test ANDI operation
-        a = 32'hA5A5A5A5;
-        b = 32'h5A5A5A5A;
-        alu_control = 4'b0010; // andi
+        // Test 3: ANDI
+        a = 32'h0000000F;
+        b = 32'h00000003;
+        alu_control = 3'b010; // ANDI
         #10;
-        $display("ANDI: a = %h, b = %h, result = %h, zero = %b", a, b, result, zero);
 
-        // Test SLL operation
-        a = 32'd1;
-        b = 32'd4;
-        alu_control = 4'b0011; // sll
+        // Test 4: SLL
+        a = 32'h00000001;
+        b = 32'h00000002;
+        alu_control = 3'b011; // SLL
         #10;
-        $display("SLL: a = %d, b = %d, result = %d, zero = %b", a, b, result, zero);
 
-        // Test BNE operation (result should be 1 if a != b)
-        a = 32'd20;
-        b = 32'd25;
-        alu_control = 4'b0100; // bne
+        // Test 5: SUB (BNE)
+        a = 32'h00000005;
+        b = 32'h00000005;
+        alu_control = 3'b100; // SUB (BNE)
         #10;
-        $display("BNE: a = %d, b = %d, result = %d, zero = %b", a, b, result, zero);
-
-        // Test BNE operation (result should be 0 if a == b)
-        a = 32'd30;
-        b = 32'd30;
-        alu_control = 4'b0100; // bne
-        #10;
-        $display("BNE: a = %d, b = %d, result = %d, zero = %b", a, b, result, zero);
 
         $finish;
     end

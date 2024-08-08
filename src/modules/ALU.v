@@ -1,20 +1,22 @@
 module ALU (
-    input wire [31:0] a, b,
-    input wire [3:0] alu_control,
+    input wire [31:0] a,
+    input wire [31:0] b,
+    input wire [2:0] alu_control,
     output reg [31:0] result,
-    output wire zero
+    output reg zero
 );
+
     always @(*) begin
         case (alu_control)
-            4'b0000: result = a + b;  // add
-            4'b0001: result = a | b;  // or
-            4'b0010: result = a & b;  // andi
-            4'b0011: result = a << b; // sll
-            4'b0100: result = (a != b) ? 1 : 0; // bne (branch if not equal)
-            default: result = 0;
+            3'b000: result = a + b;
+            3'b001: result = a | b;
+            3'b010: result = a & b;
+            3'b011: result = a << b[4:0];
+            3'b100: result = a - b;
+            default: result = 32'b0;
         endcase
+
+        zero = (result == 32'b0) ? 1'b1 : 1'b0;
     end
 
-    assign zero = (result == 0);
 endmodule
-
